@@ -1,8 +1,8 @@
        function mousePressed() {
-       launchFullScreenMode(document.getElementById('p5-canvas');
+       launchFullScreenMode(document.getElementById('p5-canvas'));
        }
        function mouseReleased() {
-       launchFullScreenMode(document.getElementById('p5-canvas');
+       launchFullScreenMode(document.getElementById('p5-canvas'));
        }
                                         
         document.onfullscreenchange = function(event) {
