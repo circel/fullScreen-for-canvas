@@ -1,0 +1,321 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+          
+          
+          
+          <!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=0.9 height=device-height, initial-scale=0.4">
+  <script src="https://raw.githubusercontent.com/processing/p5.js/main/tasks/release/release-p5.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.min.js"></script>
+  <script src="https://unpkg.com/p5.touchgui@0.5.2/lib/p5.touchgui.js"></script>
+  <script src="https://raw.githubusercontent.com/circel/fullScreen-for-canvas/1/fullscreenCanvas.js"></script>
+  <script src="https://github.com/circel/fullScreen-for-canvas/blob/1/fullscreenCanvas.js"></script>
+  <!-- <script src="fullscreenCanvas.js"></script> ->
+  <!-- <script>       
+   function mousePressed() {
+       launchFullScreenMode(document.getElementById('p5-canvas');
+       }
+       function mouseReleased() {
+       launchFullScreenMode(document.getElementById('p5-canvas');
+       }
+                                        
+        document.onfullscreenchange = function(event) {
+            const element = document.fullscreenElement;
+            if (element) {
+              
+                console.log('Enter Full Screen Event occurred', element);
+            } else {
+                console.log('Exit Full Screen Event occurred', element);
+            }
+        }
+
+        /**
+        * Enter the full screen mode.
+        * 
+        */
+        function launchFullScreenMode(element) {
+            if(!document.fullscreenEnabled) { // if the full screen mode is not supported
+                alert("Full Screen Mode is not supported");
+                return;
+            }
+
+            if(element.requestFullscreen) { // if we can request a full screen for the video element    
+                    element
+                    .requestFullscreen() /// give a promise
+                    .then(() => {
+                        console.log('We are in a full screen mode');
+                        
+                    })
+            }
+        }
+
+        /**
+        * Exit the full screen mode.
+        */
+        function exitFullScreenMode() {
+            if(document.exitFullscreen) {
+                document
+                .exitFullscreen() // promise
+                .then( () => {
+                    console.log('We have exited the full screen mode');
+                });
+            }           
+        }
+     
+    
+
+/*
+
+   <div id = "canvasForHTML" > </div> 
+   
+    <div class= "center buttons">
+      <button id="enterFullScreen"
+      onclick="launchFullScreenMode(document.getElementById('canvasForHTML'))"; styl
+*/
+</script> -->
+     <div id="p5-canvas" style="position:fixed;left:-1px;top:0px;"></div> 
+  <title></title>
+</head>
+
+<body>
+<script>
+  let shark;
+  let oceon;
+function preload(){
+  //shark = loadImage('shark.gif');
+  shark = loadImage('https://media.discordapp.net/attachments/1017253849855172638/1018979617320742952/giphy_2.gif')
+  //oceon = loadImage('oceon.gif');
+  ocean = loadImage('https://media.discordapp.net/attachments/1018950297458069504/1018987115981316096/151171.gif');
+}
+//size
+let fw = 150;
+let fh = 100;
+//position
+let ax = 420;
+let ay = 150;
+//the rest
+let v;
+let mx = 200;
+let my = 200;
+let flip = 1;
+let posX = 60;
+let posY = 200;
+let velX = 0;
+let velY = 0;
+let j;
+let x = (posX + velX);
+let y = (posY + velY);
+let boostX = 7;
+let boostY = 7;
+let fast = 0;
+let mouse;
+//oceon graphics
+let c = 12;
+let c1 = 0;
+let c2 = 212;
+let num = 0.01;
+//let w = 965;
+let h = 470;
+let w = 870;
+//let h = 300;
+
+function setup() {
+  var cnvs = createCanvas(w, h);
+  cnvs.parent('p5-canvas'); 
+  let gui = createGui();
+  j = createJoystick("Joystick", 60, 230, 100, 100, -1, 1, 1, -1);
+  b1 = createButton("boost", 740, 250, 70, 70);
+  v = new Vehicle( 0,  0);
+}
+
+function draw() {
+  background(ocean);
+  //image(oceon, 0, -200, 985, 700);
+//  image(ocean, 0,0,965, 400);
+   //fill(39, 13, 183, 100);
+   var sun = map(c1, 0, 150, 0, 27);
+   fill(c,sun,c2,100);
+  rect(0, -200, 965, 700, 10);
+   ellipse(c1, 1, 1, 1);
+   c1 += num;
+   if (c1 === 956) {
+     num = -0.01;
+   }
+   if (c1 === 0) {
+     num = 2;
+   }
+   
+  drawGui();
+  translate(-v.position.x +ax ,-v.position.y +ay);
+  //target
+  mouse = createVector(posX + (velX * 7) + fast,posY + (velY * 7));
+  // Draw an ellipse at the shark position
+  noStroke();
+  fill(106,117,179,0);
+  ellipse(v.position.x,v.position.y,48,48);
+  //pointer
+  push();
+  fill(0);
+  stroke(255);
+  strokeWeight(2);
+  point(mouse.x,mouse.y, 48);
+  pop();
+  if (v.position.x > mouse.x){
+    flip = -1;
+  } else {
+    flip = 1;
+  }
+  //if its facing the other way
+  //find out the opposite flip
+  v.arrive(mouse);
+  v.update();
+  v.display();
+  fill(9,89,174,70);
+  ellipse(80,200,200);
+   
+   //movement
+   velX += j.valX;
+   velY += j.valY;
+   
+   //x movement
+   if (j.valX > 0.1) {
+     if (b1.isHeld) {
+       posX += boostX;
+     } else {
+       return false;
+     }
+   }
+   if (j.valX < -0.1) {
+     if (b1.isHeld) {
+       posX -= boostX;
+     } else {
+       return false;
+     }
+   }
+  
+   //y movement
+   if (j.valY > 0.1) {
+     if (b1.isHeld) {
+       posY += boostY;
+     } else {
+       return false;
+     }
+   }
+   if (j.valY < -0.1) {
+     if (b1.isHeld) {
+       posY -= boostY;
+     } else {
+       return false;
+     }
+   }
+}
+
+function touchStarted(){
+  return false;
+}
+
+class Vehicle {
+  constructor(x, y) {
+    this.acceleration = createVector(0, 0);
+    this.velocity = p5.Vector.random2D();
+    this.position = createVector(x, y);
+    this.r = 8;
+    this.maxspeed = 8;
+    this.velocity.setMag(this.maxspeed);
+    this.maxforce = 0.4;
+  }
+  // Method to update location
+  update() {
+    // Update velocity
+    this.velocity.add(this.acceleration);
+    // Limit speed
+    this.velocity.limit(this.maxspeed);
+    this.position.add(this.velocity);
+    // Reset accelerationelertion to 0 each cycle
+    this.acceleration.mult(0);
+  }
+
+  applyForce(force) {
+    // We could add mass here if we want A = F / M
+    this.acceleration.add(force);
+  }
+  // A method that calculates a steering force towards a target
+  // STEER = DESIRED MINUS VELOCITY
+  arrive(target) {
+    var desired = p5.Vector.sub(target, this.position); // A vector pointing from the location to the target
+    var d = desired.mag();
+    if (d > 100){
+      this.maxspeed = 14;
+    } else {
+      this.maxspeed = 8;
+    }
+    // Steering = Desired minus Velocity
+    var steer = p5.Vector.sub(desired, this.velocity);
+   // steer.limit(this.maxforce); // Limit to maximum steering force
+    this.applyForce(steer);
+  }
+
+  display() {
+    // Draw a triangle rotated in the direction of velocity
+    var theta = this.velocity.heading() + PI / 2;
+    fill(255);
+    stroke(255);
+    strokeWeight(1);
+    push();
+    translate(this.position.x, this.position.y);
+    //rotate(theta);
+    rotate(this.velocity.heading());
+    imageMode(CENTER);
+    scale(1, flip);
+    image(shark,0,0,fw,fh);
+    pop();
+  }
+}
+
+  
+  
+  
+  
+</script>
+</body>
+
+</html>
+
